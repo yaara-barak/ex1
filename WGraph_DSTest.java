@@ -1,10 +1,12 @@
 package ex1;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -12,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class WGraph_DSTest {
 
-
+    static final long start =new Date().getTime();
     weighted_graph g;
 
 
@@ -70,7 +72,7 @@ class WGraph_DSTest {
     }
     @Test
     void hasEdgeSame(){
-        assertTrue(g.hasEdge(g.getNode(-3).getKey(),g.getNode(-3).getKey()),"The nodes are connected");
+        assertFalse(g.hasEdge(g.getNode(-3).getKey(),g.getNode(-3).getKey()),"The nodes are connected");
     }
 
     @Test
@@ -216,4 +218,15 @@ class WGraph_DSTest {
         System.out.println(g.getMC());
         assertEquals(22,g.getMC(),"MC update successfully");
     }
+
+    @AfterAll
+    public static void PrintRunTime (){
+        // long s= SendSteart();
+        long end = new Date().getTime();
+        double dt = (end - start) / 1000.0;
+
+        System.out.println("run time of the test is " + dt);
+    }
+
+
 }

@@ -3,15 +3,35 @@ package ex1;
 import java.io.*;
 import java.util.*;
 
+
+/**
+ * This class creates a graph and includes algorithms:
+ * one copies, the other checks if the graph is connected,
+ * how long it takes to get from one vertex to another,
+ * what is the shortest path from one vertex to another,
+ * save the graph to the given file name
+ * and load a graph to graph algorithm
+ */
 public class WGraph_Algo implements weighted_graph_algorithms, java.io.Serializable {
 
     private weighted_graph My_Graph = new WGraph_DS();
     private HashMap<Integer, node_spd> map;
 
+    /**
+     * A default constructor
+     */
     public WGraph_Algo() {
         My_Graph = new WGraph_DS();
     }
 
+
+    /**
+     * This private class represent a node that checked in the function 'shortestPathDist',
+     * and save important information for the Dijkstra algorithm.
+     * Every vertex contains the key that represents it in the graph
+     * the vertex 'parent' key,
+     * and its distance from the source.
+     */
     static private class node_spd implements Comparable<node_spd> {
         int key;
         int tag;
@@ -57,6 +77,10 @@ public class WGraph_Algo implements weighted_graph_algorithms, java.io.Serializa
             this.distance = distance;
         }
 
+        /**
+         *This function is needed in order to compare two nodes
+         * @return  true if all the nodes fields are equals.
+         */
         @Override
         public int compareTo(node_spd n1) {
             if (distance < n1.GetDistance())
@@ -67,26 +91,42 @@ public class WGraph_Algo implements weighted_graph_algorithms, java.io.Serializa
         }
     }
 
+    /**
+     * This function does a shallow copy
+     * (creates another pointer for the graph)
+     */
     @Override
     public void init(weighted_graph g) {
         My_Graph = g;
     }
 
+    /**
+     * This function return the underlying graph of which this class works.
+     */
     @Override
     public weighted_graph getGraph() {
         return My_Graph;
     }
 
+    /**
+     * This function does a deep copy by using the data structures copy constructors
+     */
     @Override
     public weighted_graph copy() {
         weighted_graph temp = new WGraph_DS(My_Graph);// calling the Graph_DS constructor
         return temp;
     }
 
+
+    /**
+     * This function checks if the graph is connected
+     * by checking every vertex and all its neighbors and pushing them to a queue (bfs algorithm)
+     * @return Boolean (true or false)
+     */
     @Override
     public boolean isConnected() {
         if (My_Graph.nodeSize()==0)
-            return true;
+            return false;
         if (My_Graph.nodeSize() < 2)// If the graph contain only one vertex
             return true;//return true -> is linked.
         Iterator<node_info> i = My_Graph.getV().iterator();
@@ -113,6 +153,13 @@ public class WGraph_Algo implements weighted_graph_algorithms, java.io.Serializa
         return false;
     }
 
+    /**
+     *  This function returns the length of the shortest path between two vertexes on the graph
+     *  by checking all the graph vertexes edges and its neighbors edges
+     *  by pushing them to a priority queue (Dijkstra algorithm)
+     *  @param src - start node
+     *  @param dest - end (target) node
+     */
     @Override
     public double shortestPathDist(int src, int dest) {
         if(My_Graph.getNode(src)==null||My_Graph.getNode(dest)==null)
@@ -156,6 +203,13 @@ public class WGraph_Algo implements weighted_graph_algorithms, java.io.Serializa
         return -1;
     }
 
+    /**
+     * This function returns the shortest path between src to dest - as an ordered List of nodes:
+     * src--> n1-->n2-->...dest,
+     * by using the function "shortestPathDist" map that was created in the function.
+     *@param src - start node
+     *@param dest - end (target) node
+     */
     @Override
     public List<node_info> shortestPath(int src, int dest) {
         double pathSum = shortestPathDist(src, dest);
@@ -176,6 +230,13 @@ public class WGraph_Algo implements weighted_graph_algorithms, java.io.Serializa
         return My_path;
     }
 
+
+    /**
+     * This function saves the weighted (undirected) graph to the given
+     * file name
+     * @param file - the file name .
+     * @return true - iff the file was successfully saved
+     */
     @Override
     public boolean save(String file) {
         try {
@@ -190,6 +251,14 @@ public class WGraph_Algo implements weighted_graph_algorithms, java.io.Serializa
         return true;
     }
 
+
+    /**
+     * This function load a graph to graph algorithm.
+     * if the file was successfully loaded - the graph will be changed,
+     * if graph was not loaded the original graph should remain "as is".
+     * @param file - file name
+     * @return true - if the graph was successfully loaded.
+     */
     @Override
     public boolean load(String file) {
         try {
