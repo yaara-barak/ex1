@@ -246,7 +246,6 @@ class WGraph_AlgoTest {
             assertTrue(dt<10 ,"All the functions efficient");
         }
 
-
         @AfterAll
         public static void PrintRunTime (){
             long end = new Date().getTime();
