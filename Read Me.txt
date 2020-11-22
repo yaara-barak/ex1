@@ -1,8 +1,0 @@
-This project deals with modeling data structures and algorithms on graphs that are weighted and undirected such as:
-1. building a graph
-2. calculating the shorts route between two vertexes
-3. testing to see if the graph is connected 
-4. deep copying of the graph
-5. save the graph on a file
-6. load a graph from given file
-This project was created within an educational study in the OOP course at Ariel University
